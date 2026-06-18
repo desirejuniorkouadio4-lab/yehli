@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   YEHLI — Tokens de la charte graphique (inspirée du logo)
+   Vert forêt + jaune soleil · police légèrement arrondie
+   ============================================================ */
+:root {
+  /* Vert — couleur dominante du logo YEHLI */
+  --color-primary: #1a6b2a;
+  --color-primary-light: #2e8b42;
+  --color-primary-pale: #eaf4ec;
+  --color-primary-mid: #c5e0c9;
+
+  /* Jaune soleil — accent chaleureux issu du soleil du logo */
+  --color-accent: #f5c518;
+  --color-accent-light: #fff8d6;
+  --color-accent-dark: #d4a017;
+
+  /* Neutres */
+  --color-dark: #1c1c2e;
+  --color-body: #374151;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-surface: #f9fafb;
+  --color-white: #ffffff;
+
+  /* États fonctionnels */
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
+  --color-info: #2563eb;
+
+  /* Rayons */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-body), "Nunito Sans", system-ui, sans-serif;
+    color: var(--color-body);
+    background-color: var(--color-white);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-dark);
+    text-wrap: balance;
+  }
+
+  /* Accessibilité : focus visible cohérent */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-dark);
+  }
+
+  /* Scrollbar discrète */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-mid);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-light);
+  }
+}
+
+@layer components {
+  /* Conteneur de page centré */
+  .container-page {
+    @apply mx-auto w-full max-w-container px-6 lg:px-8;
+  }
+
+  /* Titre de section avec rendu équilibré */
+  .heading {
+    @apply font-heading font-bold tracking-tight text-dark;
+  }
+
+  /* Lien souligné animé (jaune soleil) */
+  .link-underline {
+    @apply relative inline-block;
+  }
+  .link-underline::after {
+    content: "";
+    @apply absolute -bottom-0.5 left-0 h-0.5 w-0 bg-accent transition-all duration-300;
+  }
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  /* ── Contenu éditorial riche (articles, formations, actions) ── */
+  .prose-yehli {
+    @apply max-w-prose text-[1.0625rem] leading-relaxed text-body;
+  }
+  .prose-yehli > * + * {
+    @apply mt-5;
+  }
+  .prose-yehli h2 {
+    @apply font-heading text-2xl font-bold text-dark mt-10 mb-4;
+  }
+  .prose-yehli h3 {
+    @apply text-xl font-bold text-dark mt-8 mb-3;
+  }
+  .prose-yehli p {
+    @apply text-body;
+  }
+  .prose-yehli a {
+    @apply font-medium text-primary underline decoration-accent decoration-2 underline-offset-2 hover:text-primary-light;
+  }
+  .prose-yehli ul {
+    @apply list-disc space-y-2 pl-6 marker:text-primary;
+  }
+  .prose-yehli ol {
+    @apply list-decimal space-y-2 pl-6 marker:text-primary marker:font-semibold;
+  }
+  .prose-yehli blockquote {
+    @apply border-l-4 border-accent bg-accent-light/50 px-5 py-3 italic text-dark rounded-r-md;
+  }
+  .prose-yehli strong {
+    @apply font-semibold text-dark;
+  }
+  .prose-yehli img {
+    @apply rounded-lg my-6;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  /* Masque dégradé pour les bandeaux de logos défilants */
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+}
+
+/* Respect des préférences de mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
