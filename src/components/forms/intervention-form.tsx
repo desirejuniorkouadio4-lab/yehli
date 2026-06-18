@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Send, ChevronRight, ChevronLeft, Building2, User, ClipboardList, Check } from "lucide-react";
@@ -31,14 +32,10 @@ const STEP_FIELDS: Record<number, (keyof InterventionInput)[]> = {
   2: ["targetAudience", "interventionType", "consent"],
 };
 
-function FloatingSelect({
-  label,
-  id,
-  error,
-  required,
-  children,
-  ...props
-}: React.SelectHTMLAttributes<HTMLSelectElement> & { label: string; error?: string }) {
+const FloatingSelect = React.forwardRef<
+  HTMLSelectElement,
+  React.SelectHTMLAttributes<HTMLSelectElement> & { label: string; error?: string }
+>(function FloatingSelect({ label, id, error, required, children, ...props }, ref) {
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-dark">
@@ -47,6 +44,7 @@ function FloatingSelect({
       </label>
       <select
         id={id}
+        ref={ref}
         required={required}
         aria-invalid={error ? true : undefined}
         className={cn(
@@ -65,7 +63,7 @@ function FloatingSelect({
       )}
     </div>
   );
-}
+});
 
 export function InterventionForm({ defaultTheme }: { defaultTheme?: string }) {
   const [step, setStep] = useState(0);
