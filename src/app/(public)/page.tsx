@@ -3,11 +3,11 @@ import Image from "next/image";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/shared/section-header";
-import { StatCard } from "@/components/shared/stat-card";
 import { Reveal } from "@/components/shared/reveal";
 import { WaveSeparator } from "@/components/shared/wave-separator";
 import { HomeHero } from "@/components/sections/home-hero";
 import { HomeWelcome } from "@/components/sections/home-welcome";
+import { ImpactStrip } from "@/components/sections/impact-strip";
 import { JoinCTA } from "@/components/sections/join-cta";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { PartnersStrip } from "@/components/sections/partners-strip";
@@ -57,24 +57,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <HomeHero stats={stats} />
+      <HomeHero />
 
-      {/* Notre mission en chiffres */}
-      <WaveSeparator topColor="#F9FAFB" bottomColor="#EAF4EC" />
-      <section className="bg-primary-pale py-16 sm:py-20">
-        <div className="container-page">
-          <SectionHeader
-            badge="Notre impact"
-            title="Notre mission en chiffres"
-            subtitle="Depuis notre création, nous œuvrons chaque jour pour rendre l'éducation et la science accessibles à tous les enfants de Côte d'Ivoire."
-          />
-          <Reveal className="mt-12 grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <StatCard key={stat.label} icon={stat.icon} value={stat.value} label={stat.label} />
-            ))}
-          </Reveal>
-        </div>
-      </section>
+      {/* Notre impact en chiffres — bandeau compact */}
+      <ImpactStrip stats={stats} />
 
       {/* Mot de bienvenue de la fondatrice */}
       <HomeWelcome />

@@ -2,9 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, HandHeart, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { ImpactStatVM } from "@/lib/data/types";
 
-export function HomeHero({ stats }: { stats: ImpactStatVM[] }) {
+export function HomeHero() {
   return (
     <section className="relative isolate overflow-hidden bg-primary">
       {/* Image de fond (enfants) — repli vert si absente */}
@@ -74,20 +73,6 @@ export function HomeHero({ stats }: { stats: ImpactStatVM[] }) {
             </Button>
           </div>
 
-          {/* Stats en ligne */}
-          {stats.length > 0 && (
-            <dl className="mt-10 grid max-w-lg grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-8 sm:grid-cols-4">
-              {stats.slice(0, 4).map((stat) => (
-                <div key={stat.label}>
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd className="font-heading text-2xl font-bold text-white sm:text-3xl">
-                    {stat.value}
-                  </dd>
-                  <dd className="mt-0.5 text-xs leading-tight text-white/75">{stat.label}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
         </div>
       </div>
     </section>
