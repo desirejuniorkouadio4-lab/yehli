@@ -17,6 +17,8 @@ export type NavFeatured = {
   text: string;
   href: string;
   cta: string;
+  /** Image de fond du panneau featured (optionnelle) */
+  image?: string;
 };
 
 export type NavItem =
@@ -74,6 +76,7 @@ export const MAIN_NAV: NavItem[] = [
       text: "Éveiller la curiosité, révéler la confiance et construire l'avenir des enfants et des jeunes de Côte d'Ivoire.",
       href: "/qui-sommes-nous",
       cta: "Découvrir YEHLI",
+      image: "/images/soutenir.jpg",
     },
   },
   {
@@ -87,6 +90,7 @@ export const MAIN_NAV: NavItem[] = [
       text: "Écoles, associations, collectivités : sollicitez un atelier, une conférence ou une formation.",
       href: "/demander-une-intervention",
       cta: "Demander une intervention",
+      image: "/images/nos%20actions.jpg",
     },
   },
   {
@@ -110,6 +114,7 @@ export const MAIN_NAV: NavItem[] = [
       text: "Nos interventions sont flexibles et adaptées à votre public. Parlons de votre projet.",
       href: "/demander-une-intervention",
       cta: "Demander une intervention",
+      image: "/images/formation.jpg",
     },
   },
   {
@@ -138,6 +143,7 @@ export const MAIN_NAV: NavItem[] = [
       text: "Chaque contribution finance des ateliers, des formations et des ressources pour les enfants.",
       href: "/nous-soutenir",
       cta: "Toutes les façons d'aider",
+      image: "/images/hero-enfants.jpg",
     },
   },
   { type: "link", label: "Contact", href: "/contact" },

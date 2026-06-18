@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
@@ -59,14 +60,14 @@ export function Navbar() {
       )}
     >
       <div onMouseLeave={scheduleClose} onMouseEnter={() => closeTimer.current && clearTimeout(closeTimer.current)}>
-        <div className="container-page flex h-16 items-center justify-between gap-4 lg:h-20">
+        <div className="container-page flex h-16 items-center justify-between gap-3">
           <Link href="/" aria-label="YEHLI — Accueil" className="shrink-0">
             <Logo className="h-9 lg:h-11" />
           </Link>
 
           {/* Navigation desktop */}
           <nav aria-label="Navigation principale" className="hidden lg:block">
-            <ul className="flex items-center gap-0.5">
+            <ul className="flex items-center gap-0">
               {MAIN_NAV.map((item) => {
                 const isActive =
                   item.type === "link"
@@ -80,7 +81,7 @@ export function Navbar() {
                       <Link
                         href={item.href}
                         className={cn(
-                          "rounded-full px-3.5 py-2 text-[0.95rem] font-medium transition-colors",
+                          "whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors",
                           isActive ? "text-primary" : "text-dark hover:text-primary",
                         )}
                       >
@@ -93,14 +94,14 @@ export function Navbar() {
                         aria-expanded={active === item.label}
                         onClick={() => setActive((a) => (a === item.label ? null : item.label))}
                         className={cn(
-                          "flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.95rem] font-medium transition-colors",
+                          "flex items-center gap-0.5 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors",
                           active === item.label || isActive ? "text-primary" : "text-dark hover:text-primary",
                         )}
                       >
                         {item.label}
                         <ChevronDown
                           className={cn(
-                            "h-4 w-4 transition-transform duration-200",
+                            "h-3.5 w-3.5 transition-transform duration-200",
                             active === item.label && "rotate-180",
                           )}
                         />
@@ -113,16 +114,18 @@ export function Navbar() {
           </nav>
 
           {/* CTA desktop */}
-          <div className="hidden items-center gap-2.5 lg:flex">
+          <div className="hidden shrink-0 items-center gap-2 lg:flex">
             <Button asChild variant="secondary" size="sm">
               <Link href="/faire-un-don">Faire un don</Link>
             </Button>
-            <Button asChild size="sm">
-              <Link href="/demander-une-intervention">
-                Demander une intervention
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            <div className="hidden xl:block">
+              <Button asChild size="sm">
+                <Link href="/demander-une-intervention" className="whitespace-nowrap">
+                  Demander une intervention
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Bouton menu mobile */}
@@ -213,17 +216,33 @@ function MegaPanel({
         </div>
 
         {item.featured && (
-          <div className="relative flex flex-col justify-between gap-4 bg-gradient-to-br from-primary to-[#0f4a1d] p-6 lg:col-span-4">
-            <div>
-              <p className="font-heading text-lg font-bold text-white">{item.featured.title}</p>
-              <p className="mt-2 text-sm leading-relaxed text-white/85">{item.featured.text}</p>
+          <div className="relative flex flex-col justify-between gap-4 overflow-hidden lg:col-span-4">
+            {/* Image de fond */}
+            {item.featured.image && (
+              <Image
+                src={item.featured.image}
+                alt=""
+                fill
+                sizes="(max-width: 1280px) 33vw, 400px"
+                className="object-cover"
+                aria-hidden="true"
+              />
+            )}
+            {/* Voile vert directionnel : opaque en haut (texte), léger en bas (image) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/97 via-primary/88 to-[#0f4a1d]/80" />
+            {/* Contenu */}
+            <div className="relative z-10 flex h-full flex-col justify-between gap-4 p-6">
+              <div>
+                <p className="font-heading text-lg font-bold text-white">{item.featured.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/85">{item.featured.text}</p>
+              </div>
+              <Button asChild variant="accent" size="sm" className="w-fit">
+                <Link href={item.featured.href} onClick={onNavigate}>
+                  {item.featured.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
-            <Button asChild variant="accent" size="sm" className="w-fit">
-              <Link href={item.featured.href} onClick={onNavigate}>
-                {item.featured.cta}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
           </div>
         )}
       </div>

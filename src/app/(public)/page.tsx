@@ -7,7 +7,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { WaveSeparator } from "@/components/shared/wave-separator";
 import { HomeHero } from "@/components/sections/home-hero";
 import { HomeWelcome } from "@/components/sections/home-welcome";
-import { ImpactStrip } from "@/components/sections/impact-strip";
+import { NewsTicker } from "@/components/sections/news-ticker";
 import { JoinCTA } from "@/components/sections/join-cta";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { PartnersStrip } from "@/components/sections/partners-strip";
@@ -39,7 +39,7 @@ export default async function HomePage() {
       getImpactStats(),
       getActions(),
       getTrainings(),
-      getRecentArticles(3),
+      getRecentArticles(6),
       getEvents(),
       getGalleryItems(),
       getTestimonials(),
@@ -48,6 +48,8 @@ export default async function HomePage() {
     ]);
 
   const featuredTrainings = trainings.slice(0, 3);
+  const tickerArticles = articles.slice(0, 6);
+  const recentArticles = articles.slice(0, 3);
   const galleryPreview = gallery.slice(0, 6);
   const now = Date.now();
   const upcoming = allEvents
@@ -57,10 +59,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <HomeHero />
+      <HomeHero stats={stats} />
 
-      {/* Notre impact en chiffres — bandeau compact */}
-      <ImpactStrip stats={stats} />
+      {/* Fil d'actualités défilant */}
+      <NewsTicker articles={tickerArticles} />
 
       {/* Mot de bienvenue de la fondatrice */}
       <HomeWelcome />
@@ -173,7 +175,7 @@ export default async function HomePage() {
             subtitle="Ressources de vulgarisation scientifique, réflexions pédagogiques et nouvelles de l'association."
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {articles.map((article, i) => (
+            {recentArticles.map((article, i) => (
               <Reveal key={article.id} delay={i * 0.05}>
                 <ArticleCard article={article} />
               </Reveal>

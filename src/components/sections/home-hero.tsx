@@ -2,8 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, HandHeart, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getIcon } from "@/lib/icons";
+import type { ImpactStatVM } from "@/lib/data/types";
 
-export function HomeHero() {
+export function HomeHero({ stats = [] }: { stats?: ImpactStatVM[] }) {
   return (
     <section className="relative isolate overflow-hidden bg-primary">
       {/* Image de fond (enfants) — repli vert si absente */}
@@ -73,6 +75,29 @@ export function HomeHero() {
             </Button>
           </div>
 
+          {/* Statistiques clés */}
+          {stats.length > 0 && (
+            <div className="mt-12 border-t border-white/20 pt-8">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+                {stats.slice(0, 4).map((stat) => {
+                  const Icon = getIcon(stat.icon ?? "TrendingUp");
+                  return (
+                    <div key={stat.label}>
+                      <div className="flex items-center gap-1.5">
+                        <Icon className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                        <span className="font-heading text-2xl font-bold text-white sm:text-3xl">
+                          {stat.value}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-xs font-medium uppercase tracking-wider text-white/65">
+                        {stat.label}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { PageTransition } from "@/components/layout/page-transition";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SITE } from "@/config/site";
 
@@ -38,7 +39,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         Aller au contenu
       </a>
       <Navbar />
-      <main id="contenu">{children}</main>
+      <main id="contenu">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer />
     </>
   );

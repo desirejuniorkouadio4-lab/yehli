@@ -129,12 +129,20 @@ export async function Footer() {
               </Link>
             ))}
           </div>
-          <p className="text-white/60">
-            Site conçu et réalisé par{" "}
-            <span className="font-medium text-white/80">
-              {get("site_creator", SITE.creator)}
-            </span>
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-white/60">
+              Site conçu et réalisé par{" "}
+              <span className="font-medium text-white/80">
+                {get("site_creator", SITE.creator)}
+              </span>
+            </p>
+            <Link
+              href="/admin"
+              className="rounded-full border border-white/20 px-3 py-1 text-xs text-white/40 transition-colors hover:border-white/40 hover:text-white/70"
+            >
+              Espace admin
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
