@@ -7,6 +7,7 @@ import { StatCard } from "@/components/shared/stat-card";
 import { Reveal } from "@/components/shared/reveal";
 import { WaveSeparator } from "@/components/shared/wave-separator";
 import { HomeHero } from "@/components/sections/home-hero";
+import { HomeWelcome } from "@/components/sections/home-welcome";
 import { JoinCTA } from "@/components/sections/join-cta";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
 import { PartnersStrip } from "@/components/sections/partners-strip";
@@ -74,6 +75,9 @@ export default async function HomePage() {
           </Reveal>
         </div>
       </section>
+
+      {/* Mot de bienvenue de la fondatrice */}
+      <HomeWelcome />
 
       {/* Nos domaines d'action */}
       <section className="py-16 sm:py-20">
