@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { Checkbox } from "@/components/ui/checkbox";
 import { saveEvent } from "@/app/actions/admin-content";
 
@@ -57,8 +58,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <Input id="country" name="country" defaultValue={record?.country ?? "Côte d'Ivoire"} />
               </AdminField>
             </div>
-            <AdminField label="Image de couverture (URL)" htmlFor="coverImage">
-              <Input id="coverImage" name="coverImage" defaultValue={record?.coverImage ?? ""} />
+            <AdminField label="Image de couverture">
+              <ImageUpload name="coverImage" defaultValue={record?.coverImage} />
             </AdminField>
             <div className="grid gap-4 sm:grid-cols-2">
               <AdminField label="Capacité" htmlFor="capacity">

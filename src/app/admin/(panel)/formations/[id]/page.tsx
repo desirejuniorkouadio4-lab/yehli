@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { saveTraining } from "@/app/actions/admin-content";
 
 export const metadata = { title: "Formation" };
@@ -54,8 +55,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <AdminField label="Prérequis" htmlFor="prerequisites">
               <Input id="prerequisites" name="prerequisites" defaultValue={record?.prerequisites ?? ""} />
             </AdminField>
-            <AdminField label="Image (URL)" htmlFor="image">
-              <Input id="image" name="image" defaultValue={record?.image ?? ""} />
+            <AdminField label="Image">
+              <ImageUpload name="image" defaultValue={record?.image} />
             </AdminField>
             <div className="grid gap-4 sm:grid-cols-2">
               <AdminField label="Meta title (SEO)" htmlFor="metaTitle">

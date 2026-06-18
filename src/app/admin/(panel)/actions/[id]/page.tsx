@@ -4,6 +4,7 @@ import { safe } from "@/lib/admin/utils";
 import { ICON_NAMES } from "@/lib/icons";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, Select, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { saveAction } from "@/app/actions/admin-content";
 
 export const metadata = { title: "Axe d'action" };
@@ -41,8 +42,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <AdminField label="Public cible" htmlFor="targetAudience">
               <Input id="targetAudience" name="targetAudience" defaultValue={record?.targetAudience ?? ""} />
             </AdminField>
-            <AdminField label="Image (URL)" htmlFor="image">
-              <Input id="image" name="image" defaultValue={record?.image ?? ""} />
+            <AdminField label="Image">
+              <ImageUpload name="image" defaultValue={record?.image} />
             </AdminField>
             <div className="grid gap-4 sm:grid-cols-3">
               <AdminField label="Icône" htmlFor="icon">

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, Select, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { savePartner } from "@/app/actions/admin-site";
 
 export const metadata = { title: "Partenaire" };
@@ -42,8 +43,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <AdminField label="Description" htmlFor="description">
               <Textarea id="description" name="description" rows={3} defaultValue={record?.description ?? ""} />
             </AdminField>
-            <AdminField label="Logo (URL)" htmlFor="logo">
-              <Input id="logo" name="logo" defaultValue={record?.logo ?? ""} />
+            <AdminField label="Logo">
+              <ImageUpload name="logo" defaultValue={record?.logo} aspect="wide" />
             </AdminField>
             <AdminField label="Site web" htmlFor="website">
               <Input id="website" name="website" defaultValue={record?.website ?? ""} placeholder="https://" />

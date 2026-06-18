@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, Select, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { RichEditor } from "@/components/admin/rich-editor";
 import { Checkbox } from "@/components/ui/checkbox";
 import { saveArticle } from "@/app/actions/admin-articles";
@@ -70,8 +71,8 @@ export default async function Page({ params }: { params: { id: string } }) {
                     ))}
                   </Select>
                 </AdminField>
-                <AdminField label="Image de couverture (URL)" htmlFor="coverImage">
-                  <Input id="coverImage" name="coverImage" defaultValue={record?.coverImage ?? ""} />
+                <AdminField label="Image de couverture">
+                  <ImageUpload name="coverImage" defaultValue={record?.coverImage} />
                 </AdminField>
                 <div>
                   <p className="mb-1.5 text-sm font-semibold text-dark">Tags</p>

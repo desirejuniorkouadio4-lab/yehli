@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, Select, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { saveGalleryItem } from "@/app/actions/admin-gallery";
 
 export const metadata = { title: "Média" };
@@ -51,11 +52,11 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </Select>
               </AdminField>
             </div>
-            <AdminField label="URL du média" htmlFor="url" required>
-              <Input id="url" name="url" defaultValue={record?.url ?? ""} required />
+            <AdminField label="Image / Média" required>
+              <ImageUpload name="url" defaultValue={record?.url} />
             </AdminField>
-            <AdminField label="Miniature (URL)" htmlFor="thumbnail">
-              <Input id="thumbnail" name="thumbnail" defaultValue={record?.thumbnail ?? ""} />
+            <AdminField label="Miniature (optionnelle)" hint="Vignette différente de l'image principale">
+              <ImageUpload name="thumbnail" defaultValue={record?.thumbnail} />
             </AdminField>
             <div className="grid gap-4 sm:grid-cols-2">
               <AdminField label="Date" htmlFor="date">

@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Search, X, Loader2 } from "lucide-react";
-import { Select } from "@/components/ui/select";
+import { Search, SlidersHorizontal, X, Loader2 } from "lucide-react";
+import { PillSelect } from "./floating-fields";
+import { cn } from "@/lib/utils";
 
 type Props = {
   themes: string[];
@@ -24,12 +25,13 @@ export function TrainingFilters({ themes, audiences, formats }: Props) {
       if (value) next.set(key, value);
       else next.delete(key);
       const qs = next.toString();
-      startTransition(() => router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false }));
+      startTransition(() =>
+        router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false }),
+      );
     },
     [params, pathname, router],
   );
 
-  // Recherche avec léger anti-rebond.
   useEffect(() => {
     const handle = setTimeout(() => {
       if (search !== (params.get("search") ?? "")) setParam("search", search);
@@ -38,11 +40,11 @@ export function TrainingFilters({ themes, audiences, formats }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const hasFilters =
-    Boolean(search) ||
-    Boolean(params.get("theme")) ||
-    Boolean(params.get("audience")) ||
-    Boolean(params.get("format"));
+  const audience = params.get("audience") ?? "";
+  const format = params.get("format") ?? "";
+  const theme = params.get("theme") ?? "";
+
+  const activeCount = [search, audience, format, theme].filter(Boolean).length;
 
   const reset = () => {
     setSearch("");
@@ -50,27 +52,60 @@ export function TrainingFilters({ themes, audiences, formats }: Props) {
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-white p-4 shadow-sm sm:p-5">
-      <div className="grid gap-3 lg:grid-cols-[1.5fr,1fr,1fr,1fr]">
-        <div className="relative">
-          {isPending ? (
-            <Loader2 className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted" />
-          ) : (
-            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-          )}
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher une formation…"
-            aria-label="Rechercher une formation"
-            className="h-11 w-full rounded-md border border-border bg-white pl-10 pr-4 text-[0.9375rem] text-dark placeholder:text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-        <Select
+    <div className="space-y-4 rounded-2xl border border-border bg-white p-5 shadow-sm">
+      {/* Barre de recherche */}
+      <div className="relative">
+        {isPending ? (
+          <Loader2 className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted" />
+        ) : (
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+        )}
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Rechercher une formation…"
+          aria-label="Rechercher une formation"
+          className="h-11 w-full rounded-xl border border-border bg-white pl-10 pr-4 text-sm text-dark placeholder:text-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+        />
+      </div>
+
+      {/* Séparateur */}
+      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted">
+        <SlidersHorizontal className="h-3.5 w-3.5" />
+        Filtrer par
+      </div>
+
+      {/* Public cible - pills */}
+      <div className="space-y-1.5">
+        <p className="text-xs font-semibold text-dark">Public</p>
+        <PillSelect
+          options={audiences as string[]}
+          value={audience}
+          onChange={(v) => setParam("audience", v)}
+          allLabel="Tous"
+        />
+      </div>
+
+      {/* Format - pills */}
+      <div className="space-y-1.5">
+        <p className="text-xs font-semibold text-dark">Format</p>
+        <PillSelect
+          options={formats as string[]}
+          value={format}
+          onChange={(v) => setParam("format", v)}
+          allLabel="Tous"
+        />
+      </div>
+
+      {/* Thématique - select (liste trop longue pour des pills) */}
+      <div className="space-y-1.5">
+        <p className="text-xs font-semibold text-dark">Thématique</p>
+        <select
           aria-label="Filtrer par thématique"
-          value={params.get("theme") ?? ""}
+          value={theme}
           onChange={(e) => setParam("theme", e.target.value)}
+          className="h-10 w-full rounded-xl border border-border bg-white px-3 text-sm text-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         >
           <option value="">Toutes les thématiques</option>
           {themes.map((t) => (
@@ -78,40 +113,23 @@ export function TrainingFilters({ themes, audiences, formats }: Props) {
               {t}
             </option>
           ))}
-        </Select>
-        <Select
-          aria-label="Filtrer par public"
-          value={params.get("audience") ?? ""}
-          onChange={(e) => setParam("audience", e.target.value)}
-        >
-          <option value="">Tous les publics</option>
-          {audiences.map((a) => (
-            <option key={a} value={a}>
-              {a}
-            </option>
-          ))}
-        </Select>
-        <Select
-          aria-label="Filtrer par format"
-          value={params.get("format") ?? ""}
-          onChange={(e) => setParam("format", e.target.value)}
-        >
-          <option value="">Tous les formats</option>
-          {formats.map((f) => (
-            <option key={f} value={f}>
-              {f}
-            </option>
-          ))}
-        </Select>
+        </select>
       </div>
-      {hasFilters && (
+
+      {/* Réinitialiser */}
+      {activeCount > 0 && (
         <button
           type="button"
           onClick={reset}
-          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-light"
+          className={cn(
+            "flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-error/40 py-2 text-sm font-medium text-error transition-colors hover:bg-error/5",
+          )}
         >
           <X className="h-4 w-4" />
-          Réinitialiser les filtres
+          Effacer les filtres
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-error text-xs font-bold text-white">
+            {activeCount}
+          </span>
         </button>
       )}
     </div>

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { saveTestimonial } from "@/app/actions/admin-site";
 
 export const metadata = { title: "Témoignage" };
@@ -31,8 +32,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <AdminField label="Témoignage" htmlFor="content" required>
               <Textarea id="content" name="content" rows={5} defaultValue={record?.content ?? ""} required />
             </AdminField>
-            <AdminField label="Photo (URL)" htmlFor="photo" hint="Laisser vide pour afficher les initiales">
-              <Input id="photo" name="photo" defaultValue={record?.photo ?? ""} />
+            <AdminField label="Photo" hint="Laisser vide pour afficher les initiales">
+              <ImageUpload name="photo" defaultValue={record?.photo} aspect="square" />
             </AdminField>
             <div className="grid grid-cols-2 gap-4">
               <AdminField label="Ordre d'affichage" htmlFor="order">

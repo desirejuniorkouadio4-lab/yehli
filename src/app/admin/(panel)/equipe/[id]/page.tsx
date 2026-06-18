@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminField, AdminFormCard, Input, Textarea, StatusField, SubmitBar } from "@/components/admin/form-controls";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { saveTeamMember } from "@/app/actions/admin-site";
 
 export const metadata = { title: "Membre de l'équipe" };
@@ -31,8 +32,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <AdminField label="Biographie" htmlFor="bio">
               <Textarea id="bio" name="bio" rows={4} defaultValue={record?.bio ?? ""} />
             </AdminField>
-            <AdminField label="Photo (URL)" htmlFor="photo" hint="Laisser vide pour afficher les initiales">
-              <Input id="photo" name="photo" defaultValue={record?.photo ?? ""} />
+            <AdminField label="Photo" hint="Laisser vide pour afficher les initiales">
+              <ImageUpload name="photo" defaultValue={record?.photo} aspect="square" />
             </AdminField>
             <div className="grid gap-4 sm:grid-cols-2">
               <AdminField label="Email" htmlFor="email">
