@@ -14,9 +14,19 @@ export function useServerForm(action: (formData: FormData) => Promise<ActionResu
   const [pending, startTransition] = useTransition();
   const [result, setResult] = useState<ActionResult | null>(null);
 
-  const submit = () => {
+  const submit = (data?: Record<string, unknown>) => {
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
+    // Pour les formulaires multi-étapes : les champs des étapes précédentes
+    // ne sont plus dans le DOM à la soumission. On injecte les valeurs
+    // collectées et validées par RHF pour compléter le FormData.
+    if (data) {
+      for (const [key, value] of Object.entries(data)) {
+        if (!formData.has(key) && value !== undefined && value !== null) {
+          formData.set(key, String(value));
+        }
+      }
+    }
     startTransition(async () => {
       const res = await action(formData);
       setResult(res);
