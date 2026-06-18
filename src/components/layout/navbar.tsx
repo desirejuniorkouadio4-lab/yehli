@@ -228,8 +228,10 @@ function MegaPanel({
                 aria-hidden="true"
               />
             )}
-            {/* Voile vert directionnel : opaque en haut (texte), léger en bas (image) */}
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/97 via-primary/88 to-[#0f4a1d]/80" />
+            {/* Couche 1 : assombrissement universel de l'image */}
+            <div className="absolute inset-0 bg-black/60" />
+            {/* Couche 2 : voile vert YEHLI — solide en haut (texte), léger en bas (image) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary/85 to-primary/55" />
             {/* Contenu */}
             <div className="relative z-10 flex h-full flex-col justify-between gap-4 p-6">
               <div>
