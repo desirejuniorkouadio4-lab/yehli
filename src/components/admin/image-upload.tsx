@@ -123,7 +123,7 @@ export function ImageUpload({ name, defaultValue, aspect = "video" }: Props) {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white">
                 <ImageIcon className="h-7 w-7" />
               </div>
-              <p className="text-sm font-semibold text-primary">Déposez l'image ici</p>
+              <p className="text-sm font-semibold text-primary">Déposez l&apos;image ici</p>
             </>
           ) : (
             <>
