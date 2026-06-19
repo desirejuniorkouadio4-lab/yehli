@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  serverExternalPackages: ["jsdom", "isomorphic-dompurify"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
