@@ -5,6 +5,8 @@ import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 import {
   Bold,
   Italic,
@@ -19,6 +21,7 @@ import {
   Link2,
   Link2Off,
   Loader2,
+  Baseline,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -49,6 +52,85 @@ function ToolbarButton({
     >
       {children}
     </button>
+  );
+}
+
+const PRESET_COLORS = [
+  { name: "Noir", value: "#1C1C2E" },
+  { name: "Vert YEHLI", value: "#1A6B2A" },
+  { name: "Vert clair", value: "#2E8B42" },
+  { name: "Bleu", value: "#2563EB" },
+  { name: "Rouge", value: "#DC2626" },
+  { name: "Orange", value: "#D97706" },
+  { name: "Jaune", value: "#D4A017" },
+  { name: "Gris", value: "#6B7280" },
+];
+
+function ColorControl({ editor }: { editor: Editor }) {
+  const [open, setOpen] = useState(false);
+  const current = (editor.getAttributes("textStyle").color as string) ?? "";
+
+  return (
+    <div className="relative">
+      <ToolbarButton onClick={() => setOpen((o) => !o)} active={!!current} label="Couleur du texte">
+        <Baseline className="h-4 w-4" style={current ? { color: current } : undefined} />
+      </ToolbarButton>
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-hidden
+            tabIndex={-1}
+            className="fixed inset-0 z-10 cursor-default"
+            onClick={() => setOpen(false)}
+          />
+          <div className="absolute left-0 top-9 z-20 w-44 rounded-lg border border-border bg-white p-2 shadow-lg">
+            <div className="grid grid-cols-4 gap-1.5">
+              {PRESET_COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  title={c.name}
+                  aria-label={c.name}
+                  onClick={() => {
+                    editor.chain().focus().setColor(c.value).run();
+                    setOpen(false);
+                  }}
+                  className={cn(
+                    "h-7 w-7 rounded-md border transition-transform hover:scale-110",
+                    current.toLowerCase() === c.value.toLowerCase()
+                      ? "border-dark ring-2 ring-primary/40"
+                      : "border-border",
+                  )}
+                  style={{ backgroundColor: c.value }}
+                />
+              ))}
+            </div>
+            <div className="mt-2 flex items-center gap-2">
+              <label className="flex flex-1 cursor-pointer items-center gap-1.5 text-xs text-body">
+                <input
+                  type="color"
+                  value={current || "#1A6B2A"}
+                  onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
+                  className="h-6 w-6 cursor-pointer rounded border border-border bg-white p-0"
+                />
+                Personnalisée
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  editor.chain().focus().unsetColor().run();
+                  setOpen(false);
+                }}
+                className="rounded-md px-2 py-1 text-xs font-medium text-muted hover:bg-surface hover:text-dark"
+              >
+                Aucune
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -84,6 +166,7 @@ function Toolbar({
       <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive("italic")} label="Italique">
         <Italic className="h-4 w-4" />
       </ToolbarButton>
+      <ColorControl editor={editor} />
       <span className="mx-1 h-5 w-px bg-border" />
       <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} label="Titre 2">
         <Heading2 className="h-4 w-4" />
@@ -133,6 +216,8 @@ export function RichEditor({ name = "content", initialHTML = "" }: { name?: stri
   const editor = useEditor({
     extensions: [
       StarterKit,
+      TextStyle,
+      Color,
       Image.configure({ inline: false, allowBase64: false, HTMLAttributes: { class: "rounded-lg" } }),
       Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: "noopener noreferrer" } }),
     ],
