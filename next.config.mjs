@@ -2,11 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  // Next.js 14 : externalise les paquets serveur qui ne se bundlent pas bien
-  // (jsdom, tiré par isomorphic-dompurify, casse le bundle serverless Vercel).
-  experimental: {
-    serverComponentsExternalPackages: ["jsdom", "isomorphic-dompurify"],
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

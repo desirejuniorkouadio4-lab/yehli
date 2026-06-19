@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { assertRole } from "@/lib/rbac";
 import { str } from "@/lib/forms";
 import { slugify } from "@/lib/utils";
+import { sanitizeRichHtml } from "@/lib/sanitize";
 
 type Res = { ok: boolean; error?: string };
 
@@ -19,10 +20,7 @@ export async function saveArticle(id: string | null, formData: FormData) {
 
   const title = str(formData, "title");
   const status = statusOf(str(formData, "status"));
-  // Import paresseux : isomorphic-dompurify tire jsdom, qu'on ne veut charger
-  // qu'au moment de sauvegarder (jamais lors de l'affichage de la liste).
-  const { default: DOMPurify } = await import("isomorphic-dompurify");
-  const content = DOMPurify.sanitize(str(formData, "content"), { USE_PROFILES: { html: true } });
+  const content = sanitizeRichHtml(str(formData, "content"));
   const tagIds = formData.getAll("tags").filter((v): v is string => typeof v === "string" && v.length > 0);
 
   const base = {
