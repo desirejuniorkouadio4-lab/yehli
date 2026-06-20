@@ -9,7 +9,7 @@ type LogoProps = {
 };
 
 const SOURCES = {
-  color: { mark: "/images/logo-yehli-mark.svg", full: "/images/logo-yehli.svg" },
+  color: { mark: "/images/logo-yehli-mark.svg", full: "/images/logo-yehli.png" },
   white: { mark: "/images/logo-yehli-white-mark.svg", full: "/images/logo-yehli-white.svg" },
 } as const;
 

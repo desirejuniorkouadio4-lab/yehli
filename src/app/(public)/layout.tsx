@@ -12,7 +12,7 @@ const organizationLd = {
   name: SITE.name,
   alternateName: "Association YEHLI",
   url: SITE.url,
-  logo: `${SITE.url}/images/logo-yehli.svg`,
+  logo: `${SITE.url}/images/logo-yehli.png`,
   description: SITE.description,
   slogan: SITE.tagline,
   email: SITE.contact.email,

@@ -1,37 +1,38 @@
-// Génère les icônes PNG de la PWA à partir du design de l'icône YEHLI
-// (carré vert + soleil jaune). Lancer : node scripts/gen-icons.mjs
+// Génère le favicon + les icônes PWA à partir du logo YEHLI.
+// On retire la tagline (illisible en petit) et on centre « Yehli + soleil »
+// sur un carré blanc. Lancer : node scripts/gen-icons.mjs
 import sharp from "sharp";
 import { mkdirSync } from "node:fs";
 
-const sun = `
-  <circle cx="32" cy="32" r="10.5" fill="#F5C518"/>
-  <g stroke="#F5C518" stroke-width="3.6" stroke-linecap="round">
-    <line x1="47.5" y1="32" x2="52.5" y2="32"/>
-    <line x1="42.96" y1="42.96" x2="46.5" y2="46.5"/>
-    <line x1="32" y1="47.5" x2="32" y2="52.5"/>
-    <line x1="21.04" y1="42.96" x2="17.5" y2="46.5"/>
-    <line x1="16.5" y1="32" x2="11.5" y2="32"/>
-    <line x1="21.04" y1="21.04" x2="17.5" y2="17.5"/>
-    <line x1="32" y1="16.5" x2="32" y2="11.5"/>
-    <line x1="42.96" y1="21.04" x2="46.5" y2="17.5"/>
-  </g>`;
+const SRC = "public/images/logo-yehli.png";
+const BG = { r: 255, g: 255, b: 255, alpha: 1 };
 
-// Icône standard : carré vert arrondi + soleil.
-const rounded = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#1A6B2A"/>${sun}</svg>`;
-// Icône maskable : pleine (pas d'arrondi), l'OS applique son propre masque ;
-// le soleil reste dans la zone de sécurité (40% central).
-const full = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#1A6B2A"/>${sun}</svg>`;
+// 1. Retire le cadre blanc, garde le haut (« Yehli » + soleil), retire la tagline.
+const base = await sharp(SRC).trim({ threshold: 12 }).toBuffer({ resolveWithObject: true });
+const { width, height } = base.info;
+const cropH = Math.round(height * 0.72); // ~72% du haut = wordmark sans tagline
+const wordmark = await sharp(base.data)
+  .extract({ left: 0, top: 0, width, height: cropH })
+  .trim({ threshold: 12 })
+  .toBuffer();
 
 mkdirSync("public/icons", { recursive: true });
 
-async function render(svg, size, out) {
-  await sharp(Buffer.from(svg), { density: 384 }).resize(size, size).png().toFile(out);
+async function icon(size, padRatio, out) {
+  const inner = Math.round(size * (1 - padRatio * 2));
+  const fitted = await sharp(wordmark)
+    .resize(inner, inner, { fit: "contain", background: BG })
+    .toBuffer();
+  await sharp({ create: { width: size, height: size, channels: 4, background: BG } })
+    .composite([{ input: fitted, gravity: "center" }])
+    .png()
+    .toFile(out);
   console.log("✓", out);
 }
 
-await render(rounded, 192, "public/icons/icon-192.png");
-await render(rounded, 512, "public/icons/icon-512.png");
-await render(full, 512, "public/icons/icon-maskable-512.png");
-// Apple touch icon : Next le détecte automatiquement dans app/.
-await render(rounded, 180, "src/app/apple-icon.png");
+await icon(192, 0.1, "public/icons/icon-192.png");
+await icon(512, 0.1, "public/icons/icon-512.png");
+await icon(512, 0.18, "public/icons/icon-maskable-512.png"); // zone de sécurité élargie
+await icon(180, 0.1, "src/app/apple-icon.png"); // apple touch icon (auto-détecté)
+await icon(512, 0.1, "src/app/icon.png"); // favicon (auto-détecté)
 console.log("Terminé.");
