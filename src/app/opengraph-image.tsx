@@ -26,13 +26,13 @@ export default function OpenGraphImage() {
           style={{ position: "absolute", top: 0, left: 0, width: "1200px", height: "630px", objectFit: "cover" }}
         />
         {/* Voiles d'assombrissement pour la lisibilité du texte */}
-        <div style={{ position: "absolute", inset: 0, display: "flex", background: "rgba(18,20,28,0.62)" }} />
+        <div style={{ position: "absolute", inset: 0, display: "flex", background: "rgba(16,18,26,0.68)" }} />
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
-            background: "linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.78) 50%, rgba(0,0,0,0.45) 100%)",
+            background: "linear-gradient(90deg, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.84) 50%, rgba(0,0,0,0.62) 100%)",
           }}
         />
 
