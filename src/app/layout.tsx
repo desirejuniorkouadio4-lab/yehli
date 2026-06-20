@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   authors: [{ name: "YEHLI" }],
   creator: "Digital Access — Département Digital Web Solution",
   publisher: "YEHLI",
+  applicationName: "YEHLI",
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "YEHLI" },
+  formatDetection: { telephone: false },
   openGraph: {
     type: "website",
     locale: "fr_CI",

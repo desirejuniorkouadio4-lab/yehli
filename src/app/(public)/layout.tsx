@@ -1,4 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
+import { MobileTopBar } from "@/components/layout/mobile-topbar";
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { Footer } from "@/components/layout/footer";
 import { PageTransition } from "@/components/layout/page-transition";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -39,10 +41,18 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         Aller au contenu
       </a>
       <Navbar />
+      <MobileTopBar />
       <main id="contenu">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
+      {/* Espace de garde sous le contenu pour la barre d'onglets fixe (mobile). */}
+      <div
+        aria-hidden="true"
+        className="lg:hidden"
+        style={{ height: "calc(4rem + env(safe-area-inset-bottom))" }}
+      />
+      <MobileNav />
     </>
   );
 }

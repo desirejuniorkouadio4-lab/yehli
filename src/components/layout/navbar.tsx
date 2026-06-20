@@ -55,7 +55,7 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full bg-white transition-shadow duration-300",
+        "sticky top-0 z-50 hidden w-full bg-white transition-shadow duration-300 lg:block",
         scrolled ? "shadow-header" : "border-b border-border/70",
       )}
     >
