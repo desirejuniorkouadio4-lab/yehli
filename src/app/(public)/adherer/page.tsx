@@ -30,8 +30,8 @@ export default function MembershipPage() {
       <section className="py-16 sm:py-20">
         <div className="container-page grid gap-8 lg:grid-cols-[1fr,1.4fr]">
           {/* Sur mobile : formulaire en premier, encart bénéfices en second */}
-          <div className="order-1 rounded-2xl border border-border bg-white p-5 shadow-card sm:p-8 lg:order-2">
-            <h2 className="font-heading text-2xl font-bold text-dark">Formulaire d&apos;adhésion</h2>
+          <div className="order-1 min-w-0 rounded-2xl border border-border bg-white p-5 shadow-card sm:p-8 lg:order-2">
+            <h2 className="font-heading text-xl font-bold text-dark sm:text-2xl">Formulaire d&apos;adhésion</h2>
             <p className="mt-2 text-sm text-muted">
               Les champs marqués d&apos;un astérisque (*) sont obligatoires.
             </p>
@@ -40,7 +40,7 @@ export default function MembershipPage() {
             </div>
           </div>
 
-          <aside className="order-2 lg:order-1 lg:sticky lg:top-28 lg:self-start">
+          <aside className="order-2 min-w-0 lg:order-1 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-2xl bg-primary-pale p-5 sm:p-6">
               <h2 className="font-heading text-xl font-bold text-dark">Pourquoi adhérer ?</h2>
               <ul className="mt-5 space-y-4">
