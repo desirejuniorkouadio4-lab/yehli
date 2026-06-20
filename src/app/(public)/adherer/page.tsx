@@ -28,22 +28,9 @@ export default function MembershipPage() {
       />
 
       <section className="py-16 sm:py-20">
-        <div className="container-page grid gap-10 lg:grid-cols-[1fr,1.4fr]">
-          <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="rounded-2xl bg-primary-pale p-6">
-              <h2 className="font-heading text-xl font-bold text-dark">Pourquoi adhérer ?</h2>
-              <ul className="mt-5 space-y-4">
-                {BENEFITS.map((b) => (
-                  <li key={b} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-primary" />
-                    <span className="text-pretty text-body">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
-
-          <div className="rounded-2xl border border-border bg-white p-6 shadow-card sm:p-8">
+        <div className="container-page grid gap-8 lg:grid-cols-[1fr,1.4fr]">
+          {/* Sur mobile : formulaire en premier, encart bénéfices en second */}
+          <div className="order-1 rounded-2xl border border-border bg-white p-5 shadow-card sm:p-8 lg:order-2">
             <h2 className="font-heading text-2xl font-bold text-dark">Formulaire d&apos;adhésion</h2>
             <p className="mt-2 text-sm text-muted">
               Les champs marqués d&apos;un astérisque (*) sont obligatoires.
@@ -52,6 +39,20 @@ export default function MembershipPage() {
               <MembershipForm />
             </div>
           </div>
+
+          <aside className="order-2 lg:order-1 lg:sticky lg:top-28 lg:self-start">
+            <div className="rounded-2xl bg-primary-pale p-5 sm:p-6">
+              <h2 className="font-heading text-xl font-bold text-dark">Pourquoi adhérer ?</h2>
+              <ul className="mt-5 space-y-4">
+                {BENEFITS.map((b) => (
+                  <li key={b} className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                    <span className="text-pretty text-sm text-body sm:text-base">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
         </div>
       </section>
     </>

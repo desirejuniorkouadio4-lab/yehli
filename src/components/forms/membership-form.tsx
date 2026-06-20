@@ -48,14 +48,14 @@ export function MembershipForm() {
           <Input id="m-phone" type="tel" {...register("phone")} />
         </FormField>
       </div>
-      <div className="grid gap-5 sm:grid-cols-3">
+      <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
         <FormField label="Ville" htmlFor="m-city" hint="Facultatif">
           <Input id="m-city" {...register("city")} />
         </FormField>
         <FormField label="Commune" htmlFor="m-commune" hint="Facultatif">
           <Input id="m-commune" {...register("commune")} />
         </FormField>
-        <FormField label="Pays" htmlFor="m-country" required error={err("country")}>
+        <FormField label="Pays" htmlFor="m-country" required error={err("country")} className="col-span-2 sm:col-span-1">
           <Select id="m-country" {...register("country")} aria-invalid={!!err("country")}>
             {COUNTRIES.map((c) => (
               <option key={c} value={c}>{c}</option>

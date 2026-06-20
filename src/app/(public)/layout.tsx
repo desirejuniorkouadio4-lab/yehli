@@ -4,6 +4,7 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { Footer } from "@/components/layout/footer";
 import { PageTransition } from "@/components/layout/page-transition";
 import { JsonLd } from "@/components/seo/json-ld";
+import { getSiteSettings } from "@/lib/data/site";
 import { SITE } from "@/config/site";
 
 const organizationLd = {
@@ -30,7 +31,14 @@ const organizationLd = {
   ].filter(Boolean),
 };
 
-export default function PublicLayout({ children }: { children: React.ReactNode }) {
+export default async function PublicLayout({ children }: { children: React.ReactNode }) {
+  const s = await getSiteSettings();
+  const contact = {
+    email: s.contact_email || SITE.contact.email,
+    phone: s.contact_phone || SITE.contact.phone,
+    whatsapp: s.contact_whatsapp || SITE.contact.whatsapp,
+    address: s.contact_address || SITE.contact.address,
+  };
   return (
     <>
       <JsonLd data={organizationLd} />
@@ -52,7 +60,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         className="lg:hidden"
         style={{ height: "calc(4rem + env(safe-area-inset-bottom))" }}
       />
-      <MobileNav />
+      <MobileNav contact={contact} />
     </>
   );
 }

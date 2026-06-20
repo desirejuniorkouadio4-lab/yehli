@@ -24,6 +24,7 @@ import {
   MessageCircle,
   MapPin,
   Search,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from "@/components/icons/social-icons";
@@ -74,7 +75,9 @@ const MENU_DESTINATIONS: { label: string; href: string; icon: LucideIcon }[] = [
 ];
 
 // ── Composant principal ─────────────────────────────────────
-export function MobileNav() {
+type ContactInfo = { email: string; phone: string; whatsapp: string; address: string };
+
+export function MobileNav({ contact }: { contact?: ContactInfo }) {
   const pathname = usePathname();
   const [sheet, setSheet] = React.useState<Sheet>(null);
   const [barHidden, setBarHidden] = React.useState(false);
@@ -225,10 +228,10 @@ export function MobileNav() {
 
             <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-muted">Nous contacter</p>
         <div className="mb-5 space-y-1.5">
-          <ContactRow icon={Phone} label={SITE.contact.phone} href={`tel:${waNumber(SITE.contact.phone)}`} />
-          <ContactRow icon={Mail} label={SITE.contact.email} href={`mailto:${SITE.contact.email}`} />
-          <ContactRow icon={MessageCircle} label="WhatsApp" href={`https://wa.me/${waNumber(SITE.contact.whatsapp)}`} external />
-          <ContactRow icon={MapPin} label={SITE.contact.address} />
+          <ContactRow icon={Phone} label={contact?.phone ?? SITE.contact.phone} href={`tel:${waNumber(contact?.phone ?? SITE.contact.phone)}`} />
+          <ContactRow icon={Mail} label={contact?.email ?? SITE.contact.email} href={`mailto:${contact?.email ?? SITE.contact.email}`} />
+          <ContactRow icon={MessageCircle} label="WhatsApp" href={`https://wa.me/${waNumber(contact?.whatsapp ?? SITE.contact.whatsapp)}`} external />
+          <ContactRow icon={MapPin} label={contact?.address ?? SITE.contact.address} />
         </div>
 
         <div className="mb-4 flex items-center gap-2.5">
@@ -237,10 +240,14 @@ export function MobileNav() {
           <SocialLink href={SITE.socials.linkedin} label="LinkedIn" icon={LinkedinIcon} />
         </div>
 
-            <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-border pt-3 text-xs text-muted">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border pt-3 text-xs text-muted">
               <Link href="/mentions-legales" className="hover:text-primary">Mentions légales</Link>
               <Link href="/politique-de-confidentialite" className="hover:text-primary">Confidentialité</Link>
               <Link href="/contact" className="hover:text-primary">Contact</Link>
+              <Link href="/admin" className="ml-auto flex items-center gap-1 rounded-full border border-border px-2.5 py-1 hover:border-primary/40 hover:text-primary">
+                <Lock className="h-3 w-3" />
+                Admin
+              </Link>
             </div>
           </>
         )}

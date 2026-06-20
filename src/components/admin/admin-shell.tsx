@@ -111,9 +111,13 @@ export function AdminShell({ user, children }: { user: AdminUser; children: Reac
               <p className="text-sm font-semibold leading-tight text-dark">{user.name}</p>
               <p className="text-xs text-muted">{ROLE_LABELS[user.role]}</p>
             </div>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+            <Link
+              href="/admin/mon-compte"
+              title="Mon compte"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white"
+            >
               {getInitials(user.name || "Admin")}
-            </span>
+            </Link>
             <button
               type="button"
               onClick={() => signOut({ callbackUrl: "/admin/login" })}
