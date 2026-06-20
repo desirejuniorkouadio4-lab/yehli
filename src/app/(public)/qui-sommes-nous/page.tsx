@@ -78,8 +78,8 @@ export default async function AboutPage() {
             />
             <div className="relative overflow-hidden rounded-[2rem] border-8 border-white shadow-2xl shadow-primary/10">
               <Image
-                src="https://picsum.photos/seed/yehli-histoire/900/760"
-                alt="Atelier éducatif animé par YEHLI auprès d'élèves"
+                src="/images/notre-histoire.jpg"
+                alt="L'équipe YEHLI réunie lors d'une action communautaire à Abidjan"
                 width={900}
                 height={760}
                 className="aspect-[7/6] w-full object-cover"

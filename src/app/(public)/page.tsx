@@ -135,8 +135,8 @@ export default async function HomePage() {
             />
             <div className="relative overflow-hidden rounded-[2rem] border-8 border-white shadow-2xl shadow-primary/10">
               <Image
-                src="https://picsum.photos/seed/yehli-soutenir/900/700"
-                alt="Des enseignants en formation avec YEHLI"
+                src="/images/pourquoi-nous-soutenir.jpg"
+                alt="Des mains unies symbolisant la solidarité et l'engagement collectif pour l'éducation"
                 width={900}
                 height={700}
                 className="aspect-[4/3] w-full object-cover"
