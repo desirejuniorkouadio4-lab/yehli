@@ -46,12 +46,12 @@ export function MobileQuickActions() {
             <Link
               key={it.href}
               href={it.href}
-              className="flex flex-col gap-2 rounded-2xl border border-border bg-white p-4 shadow-soft transition-colors active:bg-primary-pale"
+              className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-white p-4 shadow-soft transition-colors active:bg-primary-pale"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <it.icon className="h-[22px] w-[22px]" />
               </span>
-              <span className="text-sm font-semibold leading-snug text-dark">{it.label}</span>
+              <span className="text-center text-sm font-semibold leading-snug text-dark">{it.label}</span>
             </Link>
           ))}
         </div>
