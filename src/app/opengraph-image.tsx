@@ -18,10 +18,12 @@ function toDataUri(buffer: ArrayBuffer, mime: string): string {
 }
 
 export default async function OpenGraphImage() {
-  // L'image du hero, chargée depuis le bundle (fiable en local et en prod).
-  const heroBuffer = await fetch(
-    new URL("../../public/images/hero-enfants.jpg", import.meta.url),
-  ).then((r) => r.arrayBuffer());
+  // L'image du hero, co-localisée avec la route et chargée depuis le bundle.
+  // Motif officiel next/og : asset en `./` + import.meta.url → tracé de façon
+  // fiable dans la fonction edge sur Vercel (un chemin vers /public ne l'est pas).
+  const heroBuffer = await fetch(new URL("./og-hero.jpg", import.meta.url)).then((r) =>
+    r.arrayBuffer(),
+  );
   const hero = toDataUri(heroBuffer, "image/jpeg");
 
   return new ImageResponse(
