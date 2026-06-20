@@ -1,3 +1,14 @@
+// URL de base du site pour les liens absolus (canonical, og:image, sitemap…).
+// Priorité : variable d'env explicite → domaine de production Vercel (résout
+// toujours, même avant qu'un domaine personnalisé ne soit câblé) → domaine
+// connecté par défaut (avec www).
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://www.yehli.org")
+).replace(/\/$/, "");
+
 // Constantes statiques du site (repli et structure).
 // Les valeurs dynamiques (contact, réseaux) proviennent de getSiteSettings().
 export const SITE = {
@@ -7,7 +18,7 @@ export const SITE = {
   description:
     "YEHLI est une ONG dédiée à l'éducation et à l'épanouissement des enfants et des jeunes en Côte d'Ivoire.",
   creator: "Digital Access — Département Digital Web Solution",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://yehli.org",
+  url: SITE_URL,
   contact: {
     email: "contact@yehli.org",
     phone: "+225 07 00 00 00 00",
