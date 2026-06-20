@@ -42,7 +42,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       </a>
       <Navbar />
       <MobileTopBar />
-      <main id="contenu">
+      <main id="contenu" className="overflow-x-clip">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />

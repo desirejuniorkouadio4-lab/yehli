@@ -6,6 +6,7 @@ import { SectionHeader } from "@/components/shared/section-header";
 import { Reveal } from "@/components/shared/reveal";
 import { WaveSeparator } from "@/components/shared/wave-separator";
 import { HomeHero } from "@/components/sections/home-hero";
+import { MobileQuickActions } from "@/components/sections/mobile-quick-actions";
 import { HomeWelcome } from "@/components/sections/home-welcome";
 import { NewsTicker } from "@/components/sections/news-ticker";
 import { JoinCTA } from "@/components/sections/join-cta";
@@ -60,6 +61,9 @@ export default async function HomePage() {
   return (
     <>
       <HomeHero stats={stats} />
+
+      {/* Tableau de bord d'accès rapide (mobile uniquement) */}
+      <MobileQuickActions />
 
       {/* Fil d'actualités défilant */}
       <NewsTicker articles={tickerArticles} />
