@@ -6,26 +6,12 @@ export const alt = "YEHLI — L'éducation, une lumière pour changer des vies";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Encode un binaire en data-URI base64 (compatible runtime edge, sans Buffer).
-function toDataUri(buffer: ArrayBuffer, mime: string): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
-  }
-  return `data:${mime};base64,${btoa(binary)}`;
-}
+// Photo du hero servie par le site (CDN) ; Satori la récupère au moment du
+// rendu. URL absolue → aucun asset embarqué, donc la fonction edge reste
+// légère (sous la limite de taille de Vercel) et le rendu reste fiable.
+const HERO_IMAGE = "https://yehli.org/images/hero-enfants.jpg";
 
-export default async function OpenGraphImage() {
-  // L'image du hero, co-localisée avec la route et chargée depuis le bundle.
-  // Motif officiel next/og : asset en `./` + import.meta.url → tracé de façon
-  // fiable dans la fonction edge sur Vercel (un chemin vers /public ne l'est pas).
-  const heroBuffer = await fetch(new URL("./og-hero.jpg", import.meta.url)).then((r) =>
-    r.arrayBuffer(),
-  );
-  const hero = toDataUri(heroBuffer, "image/jpeg");
-
+export default function OpenGraphImage() {
   return new ImageResponse(
     (
       <div style={{ position: "relative", display: "flex", width: "100%", height: "100%" }}>
@@ -33,7 +19,7 @@ export default async function OpenGraphImage() {
             next/og (Satori) impose <img> ; next/image n'y fonctionne pas. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={hero}
+          src={HERO_IMAGE}
           alt=""
           width={1200}
           height={630}
