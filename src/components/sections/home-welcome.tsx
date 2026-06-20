@@ -41,7 +41,7 @@ export function HomeWelcome() {
             Bienvenue dans l&apos;univers YEHLI
           </h2>
           <Quote className="mt-5 h-9 w-9 text-accent" aria-hidden="true" />
-          <div className="mt-3 space-y-4 text-pretty leading-relaxed text-body">
+          <div className="mt-3 space-y-4 text-justify leading-relaxed text-body">
             {PARAGRAPHS.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
