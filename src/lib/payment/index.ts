@@ -54,7 +54,11 @@ class ManualGateway implements PaymentGateway {
 export function getPaymentGateway(): PaymentGateway {
   const provider = (process.env.PAYMENT_PROVIDER || "").toLowerCase();
   switch (provider) {
-    // case "cinetpay":  return new CinetPayGateway();
+    case "cinetpay": {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { CinetPayGateway } = require("./cinetpay") as typeof import("./cinetpay");
+      return new CinetPayGateway();
+    }
     // case "paydunya":  return new PayDunyaGateway();
     // case "stripe":    return new StripeGateway();
     // case "fedapay":   return new FedaPayGateway();

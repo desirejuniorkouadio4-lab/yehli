@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { SITE_URL } from "@/config/site";
+import { CookieBanner } from "@/components/shared/cookie-banner";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -80,7 +81,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr" className={`${jakarta.variable} ${playfair.variable}`}>
-      <body className="min-h-screen bg-white font-sans antialiased">{children}</body>
+      <body className="min-h-screen bg-white font-sans antialiased">
+        {children}
+        <CookieBanner />
+      </body>
     </html>
   );
 }

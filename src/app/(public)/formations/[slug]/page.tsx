@@ -6,6 +6,8 @@ import { ArrowRight, CheckCircle2, Clock, Layers, Users, Tag, GraduationCap } fr
 import { PageHeader } from "@/components/shared/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SocialShare } from "@/components/shared/social-share";
+import { SITE } from "@/config/site";
 import { getTrainings, getTrainingBySlug } from "@/lib/data/programs";
 
 type Props = { params: { slug: string } };
@@ -89,6 +91,9 @@ export default async function TrainingDetailPage({ params }: Props) {
                 </ul>
               </div>
             )}
+            <div className="mt-10 border-t border-border pt-6">
+              <SocialShare url={`${SITE.url}/formations/${training.slug}`} title={training.title} />
+            </div>
           </div>
 
           <aside className="lg:sticky lg:top-28 lg:self-start">

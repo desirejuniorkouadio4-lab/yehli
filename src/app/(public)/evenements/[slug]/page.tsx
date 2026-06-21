@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Badge } from "@/components/ui/badge";
 import { EventRegistrationForm } from "@/components/forms/event-registration-form";
 import { JsonLd } from "@/components/seo/json-ld";
+import { SocialShare } from "@/components/shared/social-share";
 import { getEvents, getEventBySlug } from "@/lib/data/events";
 import { formatDate } from "@/lib/utils";
 import { SITE } from "@/config/site";
@@ -96,6 +97,9 @@ export default async function EventDetailPage({ params }: Props) {
               {paragraphs.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
+            </div>
+            <div className="mt-8 border-t border-border pt-6">
+              <SocialShare url={`${SITE.url}/evenements/${event.slug}`} title={event.title} />
             </div>
           </div>
 
