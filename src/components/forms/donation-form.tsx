@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, HandHeart } from "lucide-react";
+import { Loader2, HandHeart, ExternalLink } from "lucide-react";
 import { donationSchema, type DonationInput } from "@/lib/validations";
 import { submitDonation } from "@/app/actions/donation";
 import { useServerForm } from "./use-server-form";
@@ -30,6 +31,26 @@ export function DonationForm() {
   const { formRef, pending, result, submit } = useServerForm(submitDonation);
 
   const amount = watch("amount");
+
+  // Redirection automatique vers PayDunya/CinetPay quand le serveur renvoie une URL
+  const redirectUrl = result?.ok ? result.fieldErrors?.["redirect"] : undefined;
+  useEffect(() => {
+    if (redirectUrl) window.location.href = redirectUrl;
+  }, [redirectUrl]);
+
+  // Si redirection en cours : spinner + lien de secours
+  if (redirectUrl) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-10 text-center">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        <p className="font-semibold text-dark">Redirection vers le paiement…</p>
+        <a href={redirectUrl} className="flex items-center gap-1.5 text-sm text-primary underline hover:no-underline">
+          Cliquer ici si vous n&apos;êtes pas redirigé
+          <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </div>
+    );
+  }
 
   if (result?.ok) return <FormSuccess message={result.message} />;
   const err = (name: keyof DonationInput) =>

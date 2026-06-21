@@ -59,7 +59,11 @@ export function getPaymentGateway(): PaymentGateway {
       const { CinetPayGateway } = require("./cinetpay") as typeof import("./cinetpay");
       return new CinetPayGateway();
     }
-    // case "paydunya":  return new PayDunyaGateway();
+    case "paydunya": {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { PayDunyaGateway } = require("./paydunya") as typeof import("./paydunya");
+      return new PayDunyaGateway();
+    }
     // case "stripe":    return new StripeGateway();
     // case "fedapay":   return new FedaPayGateway();
     // case "mtn_momo":  return new MtnMomoGateway();
