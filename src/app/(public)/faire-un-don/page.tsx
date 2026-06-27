@@ -38,10 +38,10 @@ const STEPS: { num: string; icon: LucideIcon; title: string; desc: string }[] = 
   },
 ];
 
-// Numéros configurables via variables d'environnement Vercel
+// Numéros Mobile Money — modifiables via variables d'environnement Vercel
 const ORANGE_MONEY = process.env.DONATION_ORANGE_MONEY || "";
-const WAVE = process.env.DONATION_WAVE || "";
-const MTN = process.env.DONATION_MTN || "";
+const WAVE        = process.env.DONATION_WAVE        || "+225 05 66 30 36 99";
+const MTN         = process.env.DONATION_MTN         || "+225 05 66 30 36 99";
 
 export default function DonatePage() {
   return (
