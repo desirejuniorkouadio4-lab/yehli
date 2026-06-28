@@ -81,6 +81,33 @@ export default async function Page({ searchParams }: { searchParams: { saved?: s
           </div>
         </AdminFormCard>
 
+        <AdminFormCard>
+          <h2 className="mb-1 font-bold text-dark">Objectif (barre de progression)</h2>
+          <p className="mb-4 text-sm text-muted">Affiché sur la page d&apos;accueil pour motiver dons et interventions.</p>
+          <div className="space-y-5">
+            <AdminField label="Afficher l'objectif" htmlFor="goal_enabled" hint="« true » pour afficher, « false » pour masquer">
+              <Input id="goal_enabled" name="goal_enabled" defaultValue={s.goal_enabled ?? "true"} placeholder="true" />
+            </AdminField>
+            <AdminField label="Titre de l'objectif" htmlFor="goal_label">
+              <Input id="goal_label" name="goal_label" defaultValue={s.goal_label ?? ""} placeholder="Objectif 2025 : toucher 500 élèves" />
+            </AdminField>
+            <AdminField label="Description" htmlFor="goal_description">
+              <Textarea id="goal_description" name="goal_description" rows={2} defaultValue={s.goal_description ?? ""} />
+            </AdminField>
+            <div className="grid gap-5 sm:grid-cols-3">
+              <AdminField label="Valeur actuelle" htmlFor="goal_current">
+                <Input id="goal_current" name="goal_current" type="number" defaultValue={s.goal_current ?? "0"} />
+              </AdminField>
+              <AdminField label="Objectif cible" htmlFor="goal_target">
+                <Input id="goal_target" name="goal_target" type="number" defaultValue={s.goal_target ?? "0"} />
+              </AdminField>
+              <AdminField label="Unité" htmlFor="goal_unit">
+                <Input id="goal_unit" name="goal_unit" defaultValue={s.goal_unit ?? ""} placeholder="élèves" />
+              </AdminField>
+            </div>
+          </div>
+        </AdminFormCard>
+
         <div className="flex border-t border-border pt-5">
           <Button type="submit">Enregistrer les paramètres</Button>
         </div>

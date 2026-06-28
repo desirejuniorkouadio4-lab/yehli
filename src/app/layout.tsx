@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import { SITE_URL } from "@/config/site";
 import { CookieBanner } from "@/components/shared/cookie-banner";
 import "./globals.css";
@@ -84,6 +85,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-white font-sans antialiased">
         {children}
         <CookieBanner />
+        <Analytics />
       </body>
     </html>
   );

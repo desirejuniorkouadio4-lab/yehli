@@ -43,6 +43,14 @@ export const DEMO_SETTINGS: SiteSettings = {
   social_instagram: "https://instagram.com/yehli.ci",
   social_linkedin: "https://linkedin.com/company/yehli",
   social_youtube: "",
+  // Objectif annuel (barre de progression sur l'accueil)
+  goal_enabled: "true",
+  goal_label: "Objectif 2025 : toucher 500 élèves",
+  goal_description:
+    "Aidez-nous à atteindre notre objectif d'éveiller la curiosité scientifique de 500 enfants cette année.",
+  goal_current: "312",
+  goal_target: "500",
+  goal_unit: "élèves",
 };
 
 // ── Statistiques d'impact ───────────────────────────────────

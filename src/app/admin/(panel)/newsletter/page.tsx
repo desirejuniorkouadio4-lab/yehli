@@ -1,9 +1,12 @@
+import Link from "next/link";
+import { Send } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { safe } from "@/lib/admin/utils";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { ExportButton } from "@/components/admin/export-button";
 import { AdminTableShell } from "@/components/admin/admin-table";
 import { DeleteButton } from "@/components/admin/delete-button";
+import { Button } from "@/components/ui/button";
 import { deleteNewsletterSubscriber } from "@/app/actions/admin-status";
 import { formatDate } from "@/lib/utils";
 
@@ -18,7 +21,15 @@ export default async function Page() {
   return (
     <div>
       <AdminPageHeader title="Abonnés à la newsletter" description={`${items.length} abonné(s)`}>
-        <ExportButton type="newsletter" />
+        <div className="flex items-center gap-2">
+          <Button asChild>
+            <Link href="/admin/newsletter/campagne">
+              <Send className="h-4 w-4" />
+              Composer une campagne
+            </Link>
+          </Button>
+          <ExportButton type="newsletter" />
+        </div>
       </AdminPageHeader>
 
       <AdminTableShell

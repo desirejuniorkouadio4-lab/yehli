@@ -8,6 +8,10 @@ import { WaveSeparator } from "@/components/shared/wave-separator";
 import { HomeHero } from "@/components/sections/home-hero";
 import { MobileQuickActions } from "@/components/sections/mobile-quick-actions";
 import { HomeWelcome } from "@/components/sections/home-welcome";
+import { GoalProgress } from "@/components/sections/goal-progress";
+import { EventCountdown } from "@/components/sections/event-countdown";
+import { InterventionMap } from "@/components/sections/intervention-map";
+import { HomeGalleryPreview } from "@/components/sections/home-gallery-preview";
 import { NewsTicker } from "@/components/sections/news-ticker";
 import { JoinCTA } from "@/components/sections/join-cta";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
@@ -57,6 +61,12 @@ export default async function HomePage() {
     .filter((e) => e.startDate.getTime() >= now)
     .sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
   const homeEvents = (upcoming.length ? upcoming : allEvents).slice(0, 3);
+  const nextEvent = upcoming[0] ?? null;
+
+  // Objectif (barre de progression)
+  const goalEnabled = settings.goal_enabled === "true";
+  const goalCurrent = parseInt(settings.goal_current || "0", 10) || 0;
+  const goalTarget = parseInt(settings.goal_target || "0", 10) || 0;
 
   return (
     <>
@@ -70,6 +80,27 @@ export default async function HomePage() {
 
       {/* Mot de bienvenue de la fondatrice */}
       <HomeWelcome />
+
+      {/* Objectif annuel */}
+      {goalEnabled && goalTarget > 0 && (
+        <GoalProgress
+          label={settings.goal_label || "Notre objectif"}
+          description={settings.goal_description}
+          current={goalCurrent}
+          target={goalTarget}
+          unit={settings.goal_unit}
+        />
+      )}
+
+      {/* Compte à rebours du prochain événement */}
+      {nextEvent && (
+        <EventCountdown
+          title={nextEvent.title}
+          slug={nextEvent.slug}
+          startDate={nextEvent.startDate.toISOString()}
+          city={nextEvent.city}
+        />
+      )}
 
       {/* Nos domaines d'action */}
       <section className="py-16 sm:py-20">
@@ -233,23 +264,8 @@ export default async function HomePage() {
               title="La vie de YEHLI"
               subtitle="Quelques instants capturés lors de nos ateliers, formations et événements."
             />
-            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {galleryPreview.map((item) => (
-                <Link
-                  key={item.id}
-                  href="/galerie"
-                  className="group relative aspect-square overflow-hidden rounded-xl bg-primary-pale"
-                >
-                  <Image
-                    src={item.thumbnail || item.url}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <span className="absolute inset-0 bg-primary/0 transition-colors group-hover:bg-primary/20" />
-                </Link>
-              ))}
+            <div className="mt-12">
+              <HomeGalleryPreview items={galleryPreview} />
             </div>
             <div className="mt-10 text-center">
               <Button asChild variant="secondary">
@@ -262,6 +278,9 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Carte de présence sur le territoire */}
+      <InterventionMap />
 
       {/* Témoignages */}
       <TestimonialsSection testimonials={testimonials} />

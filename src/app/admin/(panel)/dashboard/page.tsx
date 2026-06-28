@@ -15,7 +15,7 @@ import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { InterventionsChart } from "@/components/admin/interventions-chart";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatCurrency } from "@/lib/utils";
 
 export const metadata = { title: "Tableau de bord" };
 
@@ -28,6 +28,9 @@ const EMPTY = {
   donations: 0,
   events: 0,
   subscribers: 0,
+  donationTotal: 0,
+  newMessages: 0,
+  pendingComments: 0,
   monthly: monthlyCounts([]),
   recentMessages: [] as { id: string; name: string; subject: string | null; status: string; createdAt: Date }[],
   recentInterventions: [] as {
@@ -57,6 +60,9 @@ async function getData() {
       recentMessages,
       recentInterventions,
       interventionDates,
+      donationAgg,
+      newMessages,
+      pendingComments,
     ] = await Promise.all([
       prisma.article.count({ where: { status: "PUBLISHED" } }),
       prisma.training.count(),
@@ -80,6 +86,9 @@ async function getData() {
         where: { createdAt: { gte: since } },
         select: { createdAt: true },
       }),
+      prisma.donation.aggregate({ where: { status: "CONFIRMED" }, _sum: { amount: true } }),
+      prisma.contactMessage.count({ where: { status: "NEW" } }),
+      prisma.articleComment.count({ where: { status: "PENDING" } }).catch(() => 0),
     ]);
 
     return {
@@ -91,6 +100,9 @@ async function getData() {
       donations,
       events,
       subscribers,
+      donationTotal: Number(donationAgg._sum.amount ?? 0),
+      newMessages,
+      pendingComments,
       monthly: monthlyCounts(interventionDates.map((i) => i.createdAt)),
       recentMessages,
       recentInterventions,
@@ -112,12 +124,47 @@ export default async function DashboardPage() {
     { icon: Mail, label: "Abonnés newsletter", value: data.subscribers, href: "/admin/newsletter" },
   ];
 
+  const highlights = [
+    {
+      label: "Total des dons confirmés",
+      value: formatCurrency(data.donationTotal, "XOF"),
+      href: "/admin/dons",
+      tint: "from-primary to-primary-light",
+    },
+    {
+      label: "Messages non lus",
+      value: String(data.newMessages),
+      href: "/admin/messages",
+      tint: "from-info to-[#1d4ed8]",
+    },
+    {
+      label: "Commentaires à modérer",
+      value: String(data.pendingComments),
+      href: "/admin/commentaires",
+      tint: "from-warning to-[#b45309]",
+    },
+  ];
+
   return (
     <div>
       <AdminPageHeader
         title="Tableau de bord"
         description="Vue d'ensemble de l'activité de YEHLI."
       />
+
+      {/* Indicateurs mis en avant */}
+      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        {highlights.map((h) => (
+          <Link
+            key={h.label}
+            href={h.href}
+            className={`rounded-2xl bg-gradient-to-br ${h.tint} p-5 text-white shadow-md transition-transform hover:-translate-y-0.5`}
+          >
+            <p className="text-sm font-medium text-white/80">{h.label}</p>
+            <p className="mt-2 font-heading text-2xl font-black sm:text-3xl">{h.value}</p>
+          </Link>
+        ))}
+      </div>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {cards.map((c) => (

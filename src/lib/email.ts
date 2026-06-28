@@ -14,21 +14,40 @@ type SendArgs = {
   subject: string;
   html: string;
   replyTo?: string;
+  bcc?: string[];
 };
 
 /** Envoi d'un email via Resend ; sans clé API, journalisation en console (mode dev). */
-export async function sendEmail({ to, subject, html, replyTo }: SendArgs): Promise<void> {
+export async function sendEmail({ to, subject, html, replyTo, bcc }: SendArgs): Promise<void> {
   if (!resend) {
     console.info(
-      `[email:dev] (clé Resend absente) → ${Array.isArray(to) ? to.join(", ") : to} | ${subject}`,
+      `[email:dev] (clé Resend absente) → ${Array.isArray(to) ? to.join(", ") : to}${bcc ? ` (bcc: ${bcc.length})` : ""} | ${subject}`,
     );
     return;
   }
   try {
-    await resend.emails.send({ from: FROM, to, subject, html, replyTo });
+    await resend.emails.send({ from: FROM, to, subject, html, replyTo, bcc });
   } catch (error) {
     console.error("[email] échec de l'envoi :", error);
   }
+}
+
+/**
+ * Envoie une campagne newsletter en masse via BCC (par lots de 45 destinataires).
+ * Retourne le nombre de destinataires traités.
+ */
+export async function sendNewsletterCampaign(
+  subject: string,
+  bodyHtml: string,
+  recipients: string[],
+): Promise<number> {
+  const html = emailLayout({ title: subject, bodyHtml });
+  const chunkSize = 45;
+  for (let i = 0; i < recipients.length; i += chunkSize) {
+    const chunk = recipients.slice(i, i + chunkSize);
+    await sendEmail({ to: adminEmail(), bcc: chunk, subject, html });
+  }
+  return recipients.length;
 }
 
 export function adminEmail(): string {

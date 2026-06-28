@@ -205,6 +205,12 @@ export async function saveSettings(formData: FormData) {
     "social_instagram",
     "social_linkedin",
     "social_youtube",
+    "goal_enabled",
+    "goal_label",
+    "goal_description",
+    "goal_current",
+    "goal_target",
+    "goal_unit",
   ];
   for (const key of keys) {
     const value = str(formData, key);

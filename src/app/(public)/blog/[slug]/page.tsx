@@ -9,6 +9,8 @@ import { RichContent } from "@/components/shared/rich-content";
 import { SocialShare } from "@/components/shared/social-share";
 import { Avatar } from "@/components/shared/avatar";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
+import { ArticleComments } from "@/components/blog/article-comments";
+import { getApprovedComments } from "@/lib/data/comments";
 import { getArticles, getArticleBySlug, getRelatedArticles } from "@/lib/data/blog";
 import { formatDate } from "@/lib/utils";
 import { SITE } from "@/config/site";
@@ -44,6 +46,7 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound();
 
   const related = await getRelatedArticles(article.slug, article.category?.slug, 3);
+  const comments = await getApprovedComments(article.id);
   const url = `${SITE.url}/blog/${article.slug}`;
 
   const jsonLd = {
@@ -131,6 +134,8 @@ export default async function ArticlePage({ params }: Props) {
             <div className="mt-8 border-t border-border pt-6">
               <SocialShare url={url} title={article.title} />
             </div>
+
+            <ArticleComments articleId={article.id} articleSlug={article.slug} comments={comments} />
           </div>
 
           <aside className="space-y-8">
